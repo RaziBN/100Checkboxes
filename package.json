@@ -1,5 +1,5 @@
 {
-  "name": "100-checkboxes",
+  "name": "checkbox",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,8 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
-    "socket.io": "^4.7.5"
+    "pg": "^8.12.0",
+    "socket.io": "^4.7.5",
+    "typeorm": "^0.3.20"
   }
 }

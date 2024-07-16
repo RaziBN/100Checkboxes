@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const http = require("http");
 const socketIo = require("socket.io");
+const { loadCheckboxStates, saveCheckboxStates } = require("./database"); // Import functions
 
 const app = express();
 const server = http.createServer(app);
@@ -19,8 +20,17 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-// Store the state of the checkboxes
+// Initialize checkbox states
 let checkboxStates = Array(100).fill(false);
+
+// Load initial state from the database
+loadCheckboxStates()
+  .then((states) => {
+    checkboxStates = states;
+  })
+  .catch((err) => {
+    console.error("Error loading checkbox states:", err);
+  });
 
 // Handle socket connections
 io.on("connection", (socket) => {
@@ -30,9 +40,14 @@ io.on("connection", (socket) => {
   socket.emit("initialState", checkboxStates);
 
   // Handle checkbox change
-  socket.on("checkboxChange", (data) => {
+  socket.on("checkboxChange", async (data) => {
     checkboxStates[data.index] = data.checked;
     io.emit("checkboxUpdate", data); // Broadcast the change to all clients
+    try {
+      await saveCheckboxStates(checkboxStates); // Save the state to the database
+    } catch (err) {
+      console.error("Error saving checkbox states:", err);
+    }
   });
 
   socket.on("disconnect", () => {

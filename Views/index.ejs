@@ -4,15 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>100 Checkboxes</title>
-    <link rel="stylesheet" href="/style/styles.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        margin: 0;
+      }
+      #checkboxes-container {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 10px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .checkbox {
+        width: 20px;
+        height: 20px;
+      }
+    </style>
   </head>
   <body>
     <div id="checkboxes-container">
       <% for (let i = 0; i < 100; i++) { %>
       <input type="checkbox" id="checkbox-<%= i %>" class="checkbox" />
-      <% if ((i + 1) % 10 === 0) { %><br /><% } %> <% } %>
+      <% } %>
     </div>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/script.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
