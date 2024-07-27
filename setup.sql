@@ -1,29 +1,40 @@
--- Create the table if it doesn't already exist
+-- Create the checkbox_states table if it doesn't already exist
 CREATE TABLE IF NOT EXISTS checkbox_states (
-  id SERIAL PRIMARY KEY,
-  state BOOLEAN[]
+  id INTEGER PRIMARY KEY,
+  state TEXT NOT NULL
+);
+
+-- Create users table if it does not exist
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL
+);
+
+-- Create federated_credentials table if it does not exist
+CREATE TABLE IF NOT EXISTS federated_credentials (
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  provider TEXT NOT NULL,
+  subject TEXT NOT NULL,
+  UNIQUE(user_id, provider)
 );
 
 -- Insert default values if the table is empty
-DO $$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM checkbox_states WHERE id = 1) THEN
-    INSERT INTO checkbox_states (state) VALUES (
-      ARRAY[
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE
-      ]::BOOLEAN[]
-    );
-  END IF;
-END $$;
+INSERT OR IGNORE INTO checkbox_states (id, state) VALUES (
+  1,
+  '[
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false
+  ]'
+);
